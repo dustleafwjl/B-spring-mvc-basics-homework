@@ -66,7 +66,7 @@ class UserControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(userNameIsEmpty))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message", is("用户名不合法")));
+                .andExpect(jsonPath("$.message", is("用户名不能为空")));
         mockMvc.perform(post("/user")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(userNameWrongful))
@@ -95,7 +95,7 @@ class UserControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(passWordIsEmpty))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message", is("密码不合法")));
+                .andExpect(jsonPath("$.message", is("密码不能为空")));
         mockMvc.perform(post("/user")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(passWordOutOfLimitWithLess))
