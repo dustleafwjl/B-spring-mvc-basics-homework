@@ -2,6 +2,7 @@ package com.thoughtworks.capacity.gtb.mvc.api;
 
 import com.thoughtworks.capacity.gtb.mvc.domain.User;
 import com.thoughtworks.capacity.gtb.mvc.exception.UserHasExistException;
+import com.thoughtworks.capacity.gtb.mvc.exception.UserNameOrPassWordWasWrongException;
 import com.thoughtworks.capacity.gtb.mvc.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,5 +20,10 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     public User registerUser(@RequestBody @Valid User user) throws UserHasExistException {
         return userService.registerUser(user);
+    }
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public User loginUser(@RequestBody @Valid User user) throws UserNameOrPassWordWasWrongException {
+        return userService.loginUser(user);
     }
 }
