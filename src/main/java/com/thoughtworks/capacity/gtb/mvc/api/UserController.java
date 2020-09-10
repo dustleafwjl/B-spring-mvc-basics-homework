@@ -20,12 +20,12 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public User registerUser(@RequestBody @Validated({UserCheckSequence.class}) User user) throws UserHasExistException {
-        return userService.registerUser(user);
+    public void registerUser(@RequestBody @Validated({UserCheckSequence.class}) User user) throws UserHasExistException {
+        userService.registerUser(user);
     }
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public User loginUser(@RequestBody @Valid User user) throws UserNameOrPassWordWasWrongException {
+    public User loginUser(@RequestBody @Validated({UserCheckSequence.class}) User user) throws UserNameOrPassWordWasWrongException {
         return userService.loginUser(user);
     }
 }

@@ -132,4 +132,58 @@ class UserControllerTest {
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.username", is("Tom")));
     }
+
+    @Test
+    public void should_return_bad_request_when_login_given_username_is_wrongful() throws Exception {
+        registerUser();
+        String userNameIsEmpty = "{\"username\": \"\",\"password\": \"12345\"}";
+        String userNameWrongful = "{\"username\": \"@Tom\",\"password\": \"12345\"}";
+        String userNameOutOfLimitWithLess = "{\"username\": \"To\",\"password\": \"12345\"}";
+        String userNameOutOfLimitWithMore = "{\"username\": \"Tom123456789\",\"password\": \"12345\"}";
+
+        mockMvc.perform(get("/user")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(userNameIsEmpty))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message", is("用户名不能为空")));
+        mockMvc.perform(get("/user")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(userNameWrongful))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message", is("用户名不合法")));
+        mockMvc.perform(get("/user")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(userNameOutOfLimitWithLess))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message", is("用户名不合法")));
+        mockMvc.perform(get("/user")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(userNameOutOfLimitWithMore))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message", is("用户名不合法")));
+    }
+
+    @Test
+    public void should_return_bad_request_when_login_given_password_is_wrongful() throws Exception {
+        registerUser();
+        String passWordIsEmpty = "{\"username\": \"Tom\",\"password\": \"\",\"email\": \"tom@qq.com\"}";
+        String passWordOutOfLimitWithLess = "{\"username\": \"Tom\",\"password\": \"1234\",\"email\": \"tom@qq.com\"}";
+        String passWordOutOfLimitWithMore = "{\"username\": \"Tom\",\"password\": \"1234567891012\",\"email\": \"tom@qq.com\"}";
+
+        mockMvc.perform(get("/user")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(passWordIsEmpty))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message", is("密码不能为空")));
+        mockMvc.perform(get("/user")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(passWordOutOfLimitWithLess))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message", is("密码不合法")));
+        mockMvc.perform(get("/user")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(passWordOutOfLimitWithMore))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message", is("密码不合法")));
+    }
 }
