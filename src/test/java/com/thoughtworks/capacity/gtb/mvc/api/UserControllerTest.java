@@ -208,4 +208,15 @@ class UserControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message", is("用户名或密码错误")));
     }
+
+    @Test
+    public void should_login_success_when_login_given_corrent_username() throws Exception {
+        registerUser();
+        String jsonUser = "{\"username\": \"Tom\",\"password\": \"12345\"}";
+        mockMvc.perform(get("/user")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonUser))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.username", is("Tom")));
+    }
 }
