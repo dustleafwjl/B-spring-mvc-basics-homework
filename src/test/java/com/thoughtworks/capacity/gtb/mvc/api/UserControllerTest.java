@@ -197,4 +197,15 @@ class UserControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message", is("用户名或密码错误")));
     }
+
+    @Test
+    public void should_return_bad_request_when_login_given_wrong_username() throws Exception {
+        registerUser();
+        String jsonUser = "{\"username\": \"Tomb\",\"password\": \"13456\",\"email\": \"tom@qq.com\"}";
+        mockMvc.perform(get("/user")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonUser))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message", is("用户名或密码错误")));
+    }
 }
