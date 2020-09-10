@@ -1,5 +1,6 @@
 package com.thoughtworks.capacity.gtb.mvc.api;
 
+import com.thoughtworks.capacity.gtb.mvc.repo.UserRepo;
 import com.thoughtworks.capacity.gtb.mvc.service.UserService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -25,7 +26,7 @@ class UserControllerTest {
 
     @AfterEach
     public void clearup() {
-        UserService.clearup();
+        UserRepo.clearup();
     }
     public void registerUser() throws Exception{
         String jsonUser = "{\"username\": \"Tom\",\"password\": \"12345\",\"email\": \"tom@qq.com\"}";
